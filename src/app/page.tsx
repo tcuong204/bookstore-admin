@@ -14,5 +14,15 @@ export default function Home() {
       router.push("/login");
     }
   }, [isLogin]);
-  return <div>...Loading</div>;
+  return (
+    <div className="flex w-full h-[700px] justify-center align-center">
+      <div className="dot-loader">
+        <span></span>
+        <span></span>
+        <span></span>
+        <p className="text-[20px]">Loading</p>
+      </div>
+      <div></div>
+    </div>
+  );
 }

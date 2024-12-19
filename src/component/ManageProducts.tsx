@@ -6,13 +6,19 @@ import {
   ProductResponse,
 } from "@/utils/ProductUtils";
 import { UserManager } from "@/utils/UserUtils";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  InfoCircleOutlined,
+} from "@ant-design/icons";
 import { ConfigProvider, Pagination, Space, Table } from "antd";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 const { Column, ColumnGroup } = Table;
 export default function ManageProducts() {
   const [product, setProduct] = useState<ProductResponse | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const router = useRouter();
   const getProducts = async () => {
     const data = await getProductbyPage(currentPage);
     if (data) {
@@ -32,7 +38,7 @@ export default function ManageProducts() {
           <div className="flex justify-end p-4">
             <CustomButton
               className="w-[20%]"
-              onClick={() => console.log()}
+              onClick={() => router.push("manage-products/create-product")}
               buttonText="Thêm sản phẩm"
               buttonType="primary"
               disabled={false}
@@ -66,7 +72,7 @@ export default function ManageProducts() {
                 dataIndex="originalPrice"
                 key="originalPrice"
               />
-              <Column title="Giá thực tế" dataIndex="price" key="price" />
+              <Column title="Giá khuyến mại" dataIndex="price" key="price" />
               <Column
                 title="Số lượng còn"
                 dataIndex="quantityAvailable"
@@ -79,7 +85,6 @@ export default function ManageProducts() {
                   <Space size="middle">
                     <a>
                       <DeleteOutlined />
-                      Xóa
                     </a>
                   </Space>
                 )}
@@ -87,11 +92,33 @@ export default function ManageProducts() {
               <Column
                 title=""
                 key="action"
-                render={(_: any, record: UserManager) => (
+                render={(_: any, record: Product) => (
                   <Space size="middle">
-                    <a>
+                    <a
+                      onClick={() =>
+                        router.push(
+                          `manage-products/update-product/${record.id}`
+                        )
+                      }
+                    >
                       <EditOutlined />
-                      Sửa
+                    </a>
+                  </Space>
+                )}
+              />
+              <Column
+                title=""
+                key="action"
+                render={(_: any, record: Product) => (
+                  <Space size="middle">
+                    <a
+                      onClick={() =>
+                        router.push(
+                          `manage-products/detail-product/${record.id}`
+                        )
+                      }
+                    >
+                      <InfoCircleOutlined />
                     </a>
                   </Space>
                 )}

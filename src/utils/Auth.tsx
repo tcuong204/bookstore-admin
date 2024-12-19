@@ -8,6 +8,7 @@ export interface User {
   isLogin: boolean;
   phoneNumber: string;
   profileImage: string | null; // null if no image
+  userType?: string;
 }
 
 export const isLoggedIn = (): boolean => {

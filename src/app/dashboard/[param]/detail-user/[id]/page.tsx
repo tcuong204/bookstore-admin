@@ -1,5 +1,6 @@
 "use client";
 import axiosInstance from "@/axios/axiosConfig";
+import { User } from "@/utils/Auth";
 import { CustomButton } from "@/utils/CustomButton";
 import {
   Button,
@@ -10,11 +11,11 @@ import {
   message,
   Select,
 } from "antd";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 type FieldType = {
-  email?: string;
-  password?: string;
+  id: number;
   firstName?: string;
   lastName?: string;
   phoneNumber?: number;
@@ -24,20 +25,35 @@ type FieldType = {
 const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
   console.log("Failed:", errorInfo);
 };
-export default function CreateUser() {
+export default function DetailUser() {
   const router = useRouter();
   const [messageApi, contextHolder] = message.useMessage();
+  const [user, setUser] = useState<User>();
   const [form] = Form.useForm();
-  console.log(form);
+  const pathname = usePathname();
+  const getUser = async () => {
+    const res = await axiosInstance.get(
+      "/get-user-by-id?userId=" + pathname.split("/").pop()
+    );
+    const userData = res.data.user;
+    setUser(userData);
 
+    // Cập nhật giá trị cho form
+    form.setFieldsValue({
+      id: userData.id,
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      phoneNumber: userData.phoneNumber,
+      userType: userData.userType,
+    });
+  };
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     try {
-      const res = await axiosInstance.post("/create-new-user", values);
+      const res = await axiosInstance.patch("/edit-user", values);
       console.log(res);
 
-      if (res.status === 201) {
+      if (res.status === 200) {
         messageApi.success("Thêm người dùng thành công");
-        form.resetFields();
         setTimeout(() => {
           router.back();
         }, 1000);
@@ -48,6 +64,9 @@ export default function CreateUser() {
     } finally {
     }
   };
+  useEffect(() => {
+    getUser();
+  }, []);
   return (
     <div className="p-4">
       <div className="p-4 bg-[#fff]">
@@ -58,51 +77,26 @@ export default function CreateUser() {
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
             style={{ width: 700 }}
-            initialValues={{ remember: true }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
           >
-            <Form.Item<FieldType>
-              label="Email"
-              name="email"
-              rules={[{ required: true, message: "Vui lòng nhập email!" }]}
-            >
-              <Input />
+            <Form.Item<FieldType> label="Id" name="id">
+              <Input disabled />
             </Form.Item>
-
-            <Form.Item<FieldType>
-              label="Password"
-              name="password"
-              rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}
-            >
-              <Input.Password autoComplete="new-password" />
+            <Form.Item<FieldType> label="Họ" name="firstName">
+              <Input disabled />
             </Form.Item>
-            <Form.Item<FieldType>
-              label="Họ"
-              name="firstName"
-              rules={[{ required: true, message: "Vui lòng nhập họ!" }]}
-            >
-              <Input />
+            <Form.Item<FieldType> label="Tên" name="lastName">
+              <Input disabled />
             </Form.Item>
-            <Form.Item<FieldType>
-              label="Tên"
-              name="lastName"
-              rules={[{ required: true, message: "Vui lòng nhập tên!" }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item<FieldType>
-              label="SĐT"
-              name="phoneNumber"
-              rules={[{ required: true, message: "Vui lòng nhập SĐT!" }]}
-            >
-              <Input />
+            <Form.Item<FieldType> label="SĐT" name="phoneNumber">
+              <Input disabled />
             </Form.Item>
             <Form.Item<FieldType> name="userType">
               <Select
+                disabled
                 className="!w-[200px] ml-[50%]"
-                defaultValue={"customer"}
                 options={[
                   { value: "customer", label: "Người dùng" },
                   { value: "admin", label: "Admin" },
@@ -114,18 +108,10 @@ export default function CreateUser() {
               <CustomButton
                 className=""
                 onClick={() => router.back()}
-                buttonText="Hủy"
+                buttonText="Quay lại"
                 buttonType="default"
                 disabled={false}
                 htmlType="button"
-              />
-              <CustomButton
-                className="ml-[1rem]"
-                onClick={() => console.log("")}
-                buttonText="Xác nhận"
-                buttonType="primary"
-                disabled={false}
-                htmlType="submit"
               />
             </Form.Item>
           </Form>

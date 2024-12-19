@@ -3,7 +3,11 @@
 import axiosInstance from "@/axios/axiosConfig";
 import { CustomButton } from "@/utils/CustomButton";
 import { getListUser, ResponseListUsers, UserManager } from "@/utils/UserUtils";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  InfoCircleOutlined,
+} from "@ant-design/icons";
 import {
   ConfigProvider,
   Divider,
@@ -48,7 +52,6 @@ export default function ManageAccounts() {
   useEffect(() => {
     getUser();
   }, [page]);
-  console.log(listUserRes?.users);
   const handleDelete = async (id: number | null) => {
     try {
       const res = await axiosInstance.delete("delete-user?id=" + id);
@@ -103,7 +106,6 @@ export default function ManageAccounts() {
                       }}
                     >
                       <DeleteOutlined />
-                      Xóa
                     </a>
                     {isModalOpen && (
                       <div
@@ -166,9 +168,27 @@ export default function ManageAccounts() {
                 key="action"
                 render={(_: any, record: UserManager) => (
                   <Space size="middle">
-                    <a onClick={() => console.log(record)}>
+                    <a
+                      onClick={() =>
+                        router.push(`manage-account/update-user/${record.id}`)
+                      }
+                    >
                       <EditOutlined />
-                      Sửa
+                    </a>
+                  </Space>
+                )}
+              />
+              <Column
+                title=""
+                key="action"
+                render={(_: any, record: UserManager) => (
+                  <Space size="middle">
+                    <a
+                      onClick={() =>
+                        router.push(`manage-account/detail-user/${record.id}`)
+                      }
+                    >
+                      <InfoCircleOutlined />
                     </a>
                   </Space>
                 )}

@@ -27,7 +27,7 @@ export default function LoginForm() {
           window.localStorage.setItem("token1", response?.data?.token);
           setTimeout(() => {
             window.location.href = "/";
-          }, 2000);
+          }, 1000);
         } else {
           messageApi.error("Đăng nhập không thành công");
         }
