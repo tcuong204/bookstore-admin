@@ -93,6 +93,18 @@ export default function ManageAccounts() {
               <Column title="Họ" dataIndex="firstName" key="firstName" />
               <Column title="Tên" dataIndex="lastName" key="lastName" />
               <Column title="Email" dataIndex="email" key="email" />
+              <Column
+                title="Vai trò"
+                dataIndex="userType"
+                key="email"
+                render={(data) =>
+                  data === "customer" ? (
+                    <span>Người dùng</span>
+                  ) : (
+                    <span>Admin</span>
+                  )
+                }
+              />
               <Column title="SĐT" dataIndex="phoneNumber" key="phoneNumber" />
               <Column
                 title=""

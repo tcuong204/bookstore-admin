@@ -53,12 +53,12 @@ export default function UpdateUser() {
       console.log(res);
 
       if (res.status === 200) {
-        messageApi.success("Thêm người dùng thành công");
+        messageApi.success("Sửa người dùng thành công");
         setTimeout(() => {
           router.back();
         }, 1000);
       } else {
-        messageApi.error("Thêm người dùng không thành công");
+        messageApi.error("Sửa người dùng không thành công");
       }
     } catch {
     } finally {

@@ -66,7 +66,7 @@ export default function DetailUser() {
   };
   useEffect(() => {
     getUser();
-  }, []);
+  });
   return (
     <div className="p-4">
       <div className="p-4 bg-[#fff]">

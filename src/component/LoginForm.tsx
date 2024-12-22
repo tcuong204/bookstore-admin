@@ -91,7 +91,7 @@ export default function LoginForm() {
               <div className="flex justify-center">
                 <button
                   onClick={() => console.log()}
-                  className="input-login !bg-[#C62027]/70 "
+                  className="input-login !bg-[#C62027]/70 !text-[#fff] "
                   disabled={props.isSubmitting}
                   type="submit"
                 >
