@@ -39,9 +39,11 @@ export default function ManageBanners() {
   useEffect(() => {
     getBanner();
   }, []);
-  const handleDelete = async (id: number | undefined) => {
+  const handleDelete = async () => {
     try {
-      const res = await axiosInstance.delete("/delete-banner?bannerId=" + id);
+      const res = await axiosInstance.delete(
+        "/delete-banner?bannerId=" + selectedBanner?.id
+      );
       if (res.status === 200) {
         messageApi.success("Xóa banner thành công");
         getBanner();
@@ -98,8 +100,8 @@ export default function ManageBanners() {
                 <Space size="middle">
                   <a
                     onClick={() => {
-                      setSelectedBanner(record);
                       showModal();
+                      setSelectedBanner(record);
                     }}
                   >
                     <DeleteOutlined />
@@ -144,7 +146,7 @@ export default function ManageBanners() {
                               </button>
                               <button
                                 className="button-confirm"
-                                onClick={() => handleDelete(selectedBanner?.id)}
+                                onClick={handleDelete}
                               >
                                 Xác nhận
                               </button>

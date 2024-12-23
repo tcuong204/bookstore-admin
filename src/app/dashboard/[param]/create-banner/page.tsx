@@ -62,12 +62,16 @@ export default function CreateBanner() {
             <Form.Item<FieldType>
               label="Link"
               name="link"
-              rules={[{ required: true, message: "Vui lòng nhập link ảnh!" }]}
+              rules={[{ required: true, message: "Vui lòng nhập link!" }]}
             >
               <Input />
             </Form.Item>
 
-            <Form.Item<FieldType> label="Link ảnh" name="imageUrl">
+            <Form.Item<FieldType>
+              label="Link ảnh"
+              name="imageUrl"
+              rules={[{ required: true, message: "Vui lòng nhập link ảnh!" }]}
+            >
               <Input />
             </Form.Item>
             <Form.Item label={null} className="ml-[50%]">
