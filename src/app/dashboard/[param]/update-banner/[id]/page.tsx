@@ -28,7 +28,7 @@ export default function UpdateBanner() {
   const param = useParams();
   const getBannerbyId = async () => {
     const res = await axiosInstance
-      .get("get-banner-by-id?bannerId=" + param.id)
+      .get("get-banner?bannerId=" + param.id)
       .then((res) => {
         form.setFieldsValue({
           link: res.data.banner.link,

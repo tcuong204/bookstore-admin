@@ -48,7 +48,7 @@ export default function AccountLayout({
 }) {
   const pathnames = usePathname();
   const pathname = pathnames.split("/").pop();
-  console.log(pathname);
+  console.log("pathname", pathname);
 
   const [isModalOpen, setIsModalOpen] = useState<true | false>(false);
   const [isAnimating, setIsAnimating] = useState<true | false>(false);
