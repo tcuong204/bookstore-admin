@@ -20,12 +20,14 @@ export default function ManageBanners() {
   const [page, setPage] = useState<number>(1);
   const router = useRouter();
   const [isAnimating, setIsAnimating] = useState<true | false>(false);
+  const [selectedBanner, setSelectedBanner] = useState<banner | null>(null);
   const getBanner = async () => {
     const res = await axiosInstance
       .get("/get-banners")
       .then((res) => setListBanner(res.data.banners));
   };
   const showModal = () => {
+    setSelectedBanner(null);
     setIsAnimating(true); // Bắt đầu animation mở
     setIsModalOpen(true);
   };
@@ -37,9 +39,9 @@ export default function ManageBanners() {
   useEffect(() => {
     getBanner();
   }, []);
-  const handleDelete = async (id: number | null) => {
+  const handleDelete = async (id: number | undefined) => {
     try {
-      const res = await axiosInstance.delete("delete-banner?bannerId=" + id);
+      const res = await axiosInstance.delete("/delete-banner?bannerId=" + id);
       if (res.status === 200) {
         messageApi.success("Xóa banner thành công");
         getBanner();
@@ -96,6 +98,7 @@ export default function ManageBanners() {
                 <Space size="middle">
                   <a
                     onClick={() => {
+                      setSelectedBanner(record);
                       showModal();
                     }}
                   >
@@ -141,7 +144,7 @@ export default function ManageBanners() {
                               </button>
                               <button
                                 className="button-confirm"
-                                onClick={() => handleDelete(record.id)}
+                                onClick={() => handleDelete(selectedBanner?.id)}
                               >
                                 Xác nhận
                               </button>
@@ -165,7 +168,6 @@ export default function ManageBanners() {
                     }
                   >
                     <EditOutlined />
-                    Sửa
                   </a>
                 </Space>
               )}

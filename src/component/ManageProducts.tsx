@@ -29,6 +29,7 @@ export default function ManageProducts() {
   const [messageApi, contextHolder] = message.useMessage();
   const [isModalOpen, setIsModalOpen] = useState<true | false>(false);
   const [isAnimating, setIsAnimating] = useState<true | false>(false);
+  const [selectedProduct, setselectedProduct] = useState<Product | null>(null);
   const router = useRouter();
   const getProducts = async () => {
     const data = await getProductbyPage(currentPage);
@@ -41,17 +42,19 @@ export default function ManageProducts() {
     setIsModalOpen(true);
   };
   const closeModal = () => {
+    setselectedProduct(null);
     setIsAnimating(false); // Kích hoạt animation đóng
     setTimeout(() => setIsModalOpen(false), 300); // Chờ animation kết thúc (0.3s)
   };
-  const handleDelete = async (id: number | null) => {
+  const handleDelete = async (id: number | undefined) => {
     try {
       const res = await axiosInstance.delete("delete-product?productId=" + id);
       if (res.status === 200) {
-        messageApi.success("Xóa người dùng thành công");
+        messageApi.success("Xóa sản phẩm thành công");
+        setselectedProduct(null);
         getProducts();
       } else {
-        messageApi.error("Xóa người dùng không thành công");
+        messageApi.error("Xóa sản phẩm không thành công");
       }
     } catch {}
   };
@@ -124,7 +127,11 @@ export default function ManageProducts() {
                 key="action"
                 render={(_: any, record: Product) => (
                   <Space size="middle">
-                    <a onClick={showModal}>
+                    <a
+                      onClick={() => {
+                        setselectedProduct(record), showModal();
+                      }}
+                    >
                       <DeleteOutlined />
                     </a>
                     {isModalOpen && (
@@ -148,7 +155,9 @@ export default function ManageProducts() {
                               </div>
                               <Divider style={{ margin: 0 }} />
                               <div className="h-[60px] flex justify-center items-center">
-                                <p>Bạn có chắc chắn xóa "{record.name}"</p>
+                                <p>
+                                  Bạn có chắc chắn xóa "{selectedProduct?.name}"
+                                </p>
                               </div>
                               <div
                                 className="p-4"
@@ -167,7 +176,9 @@ export default function ManageProducts() {
                                 </button>
                                 <button
                                   className="button-confirm"
-                                  onClick={() => handleDelete(record.id)}
+                                  onClick={() =>
+                                    handleDelete(selectedProduct?.id)
+                                  }
                                 >
                                   Xác nhận
                                 </button>

@@ -54,12 +54,16 @@ export default function CreateBanner() {
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
             style={{ width: 700 }}
-            initialValues={{ remember: true }}
+            initialValues={{ link: "", imageUrl: "" }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
           >
-            <Form.Item<FieldType> label="Link" name="link">
+            <Form.Item<FieldType>
+              label="Link"
+              name="link"
+              rules={[{ required: true, message: "Vui lòng nhập link ảnh!" }]}
+            >
               <Input />
             </Form.Item>
 

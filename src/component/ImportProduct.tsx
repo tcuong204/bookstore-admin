@@ -117,7 +117,6 @@ export default function ImportProduct() {
                     }
                   >
                     <EditOutlined />
-                    Sửa
                   </a>
                 </Space>
               )}

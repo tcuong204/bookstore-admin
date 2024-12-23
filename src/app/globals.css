@@ -12,7 +12,12 @@
     --foreground: #ededed;
   }
 }
-
+p {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
 body {
   color: var(--foreground);
   background: var(--background);

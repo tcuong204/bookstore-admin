@@ -113,13 +113,24 @@ export default function ManageOrders() {
                   <Space size="middle">
                     <Select
                       defaultValue={record.status}
-                      style={{ width: 120 }}
                       onChange={(e) => handleChange(e, record.id, "status")}
                       options={[
-                        { value: "processing", label: "Đang xử lí" },
-                        { value: "shipping", label: "Đang giao" },
-                        { value: "completed", label: "Hoàn thành" },
-                        { value: "returned", label: "Đã hủy" },
+                        {
+                          value: "processing",
+                          label: <Tag color="gold">Đang xử lí</Tag>,
+                        },
+                        {
+                          value: "shipping",
+                          label: <Tag color="geekblue">Đang giao</Tag>,
+                        },
+                        {
+                          value: "completed",
+                          label: <Tag color="green">Hoàn thành</Tag>,
+                        },
+                        {
+                          value: "returned",
+                          label: <Tag color="red">Đã hủy</Tag>,
+                        },
                       ]}
                     />
                   </Space>
@@ -132,13 +143,18 @@ export default function ManageOrders() {
                   <Space size="middle">
                     <Select
                       defaultValue={record.paymentStatus}
-                      style={{ width: 120 }}
                       onChange={(e) =>
                         handleChange(e, record.id, "paymentStatus")
                       }
                       options={[
-                        { value: "paid", label: "Đã thanh toán" },
-                        { value: "unpaid", label: "Chưa thanh toán" },
+                        {
+                          value: "paid",
+                          label: <Tag color="green">Đã thanh toán</Tag>,
+                        },
+                        {
+                          value: "unpaid",
+                          label: <Tag color="gold">Chưa thanh toán</Tag>,
+                        },
                       ]}
                     />
                   </Space>

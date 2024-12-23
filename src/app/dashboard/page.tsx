@@ -65,7 +65,7 @@ export default function Dashboard() {
         </div>
         <div className="bg-[#fff] p-4 w-[60%] ml-4 rounded-lg mt-4">
           <div>
-            <p>Sản phẩm bán chạy</p>
+            <b>Sản phẩm bán chạy</b>
             <Link href={"dashboard/manage-products"}>
               <BestSeller />
             </Link>

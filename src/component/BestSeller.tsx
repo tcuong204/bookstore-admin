@@ -64,7 +64,7 @@ export default function BestSeller() {
                 key="name"
                 render={(_: any, record: BestSellerProps) => (
                   <Space size="middle">
-                    <p className="line-clamp-2">{record.name}</p>
+                    <p className="!line-clamp-2">{record.name}</p>
                   </Space>
                 )}
               />

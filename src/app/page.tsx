@@ -4,10 +4,9 @@ import { getToken, isLoggedIn } from "@/utils/Auth";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const [isLogin, setIsLogin] = useState<true | false>(false);
+  const isLogin = isLoggedIn();
   const router = useRouter();
   useEffect(() => {
-    setIsLogin(isLoggedIn);
     if (isLogin) {
       router.push("/dashboard");
     } else {

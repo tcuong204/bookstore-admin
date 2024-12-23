@@ -29,12 +29,13 @@ export default function ManageAccounts() {
   const [page, setPage] = useState<number>(1);
   const [isAnimating, setIsAnimating] = useState<true | false>(false);
   const router = useRouter();
-  const [id, setId] = useState<number | null>(null);
+  const [selectUser, setSelectedUser] = useState<UserManager | null>(null);
   const showModal = () => {
     setIsAnimating(true); // Bắt đầu animation mở
     setIsModalOpen(true);
   };
   const closeModal = () => {
+    setSelectedUser(null);
     setIsAnimating(false); // Kích hoạt animation đóng
     setTimeout(() => setIsModalOpen(false), 300); // Chờ animation kết thúc (0.3s)
   };
@@ -52,12 +53,12 @@ export default function ManageAccounts() {
   useEffect(() => {
     getUser();
   }, [page]);
-  const handleDelete = async (id: number | null) => {
+  const handleDelete = async (id: number | undefined) => {
     try {
       const res = await axiosInstance.delete("delete-user?id=" + id);
       if (res.status === 200) {
         messageApi.success("Xóa người dùng thành công");
-        setId(null);
+        setSelectedUser(null);
         getUser();
       } else {
         messageApi.error("Xóa người dùng không thành công");
@@ -114,7 +115,7 @@ export default function ManageAccounts() {
                     <a
                       onClick={() => {
                         showModal();
-                        setId(record.id);
+                        setSelectedUser(record);
                       }}
                     >
                       <DeleteOutlined />
@@ -141,8 +142,8 @@ export default function ManageAccounts() {
                               <Divider style={{ margin: 0 }} />
                               <div className="h-[60px] flex justify-center items-center">
                                 <p>
-                                  Bạn có chắc chắn xóa "{record.firstName}{" "}
-                                  {record.lastName}"
+                                  Bạn có chắc chắn xóa "{selectUser?.firstName}{" "}
+                                  {selectUser?.lastName}"
                                 </p>
                               </div>
                               <div
@@ -162,7 +163,7 @@ export default function ManageAccounts() {
                                 </button>
                                 <button
                                   className="button-confirm"
-                                  onClick={() => handleDelete(record.id)}
+                                  onClick={() => handleDelete(selectUser?.id)}
                                 >
                                   Xác nhận
                                 </button>

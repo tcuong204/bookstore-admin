@@ -25,33 +25,13 @@ const onFinishFailed: FormProps<DetailProduct>["onFinishFailed"] = (
   console.log("Failed:", errorInfo);
 };
 const { Dragger } = Upload;
-
-const props: UploadProps = {
-  name: "file",
-  multiple: true,
-  action: "https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload",
-  onChange(info) {
-    const { status } = info.file;
-    if (status !== "uploading") {
-      console.log(info.file, info.fileList);
-    }
-    if (status === "done") {
-      message.success(`${info.file.name} file uploaded successfully.`);
-    } else if (status === "error") {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  },
-  onDrop(e) {
-    console.log("Dropped files", e.dataTransfer.files);
-  },
-};
 export default function CreateProduct() {
   const router = useRouter();
   const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm();
   const [select, setSelect] = useState("1");
   const onFinish: FormProps<DetailProduct>["onFinish"] = async (values) => {
-    const body = { ...values, image: "", genreId: select };
+    const body = { ...values, genreId: select };
     try {
       const res = await axiosInstance.post("/add-product", body);
       console.log(res);
@@ -78,7 +58,7 @@ export default function CreateProduct() {
             name="basic"
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
-            initialValues={{ remember: true }}
+            initialValues={{ image: "" }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
@@ -91,20 +71,6 @@ export default function CreateProduct() {
                 name="name"
                 rules={[{ required: true, message: "Vui lòng nhập tên!" }]}
               >
-                <Input />
-              </Form.Item>
-
-              <Form.Item<DetailProduct>
-                label="Tác giả"
-                name="author"
-                rules={[{ required: true, message: "Vui lòng nhập tác giả!" }]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item<DetailProduct> label="Nhà cung cấp" name="supplier">
-                <Input />
-              </Form.Item>
-              <Form.Item<DetailProduct> label="NXB" name="publisher">
                 <Input />
               </Form.Item>
               <Form.Item<DetailProduct>
@@ -121,6 +87,20 @@ export default function CreateProduct() {
               >
                 <Input />
               </Form.Item>
+              <Form.Item<DetailProduct>
+                label="Tác giả"
+                name="author"
+                // rules={[{ required: true, message: "Vui lòng nhập tác giả!" }]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item<DetailProduct> label="Nhà cung cấp" name="supplier">
+                <Input />
+              </Form.Item>
+              <Form.Item<DetailProduct> label="NXB" name="publisher">
+                <Input />
+              </Form.Item>
+
               <Form.Item<DetailProduct> label="Mã sản phẩm" name="productCode">
                 <Input />
               </Form.Item>
@@ -144,6 +124,9 @@ export default function CreateProduct() {
                 label="Số lượng"
                 name="quantityAvailable"
               >
+                <Input />
+              </Form.Item>
+              <Form.Item<DetailProduct> label="Link ảnh" name="image">
                 <Input />
               </Form.Item>
             </div>

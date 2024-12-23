@@ -11,9 +11,19 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { Divider, Modal } from "antd";
-import { createContext, useContext, useState } from "react";
-import { logout } from "@/utils/Auth";
+import { createContext, useContext, useEffect, useState } from "react";
+import { getUser, logout, User } from "@/utils/Auth";
 import { CustomButton } from "@/utils/CustomButton";
+const rightMenuLabel = [
+  { name: "Thêm tài khoản", url: "create-user" },
+  { name: "Sửa tài khoản", url: "update-user" },
+  { name: "Thêm sản phẩm", url: "create-product" },
+  { name: "Sửa sản phẩm", url: "update-product" },
+  { name: "Thêm banner", url: "create-banner" },
+  { name: "Sửa banner", url: "update-banner" },
+  { name: "Thêm import", url: "create-import" },
+  { name: "Sửa import", url: "update-import" },
+];
 const listMenuLeft = [
   {
     img: <UserOutlined />,
@@ -48,7 +58,7 @@ export default function AccountLayout({
 }) {
   const pathnames = usePathname();
   const pathname = pathnames.split("/").pop();
-  console.log("pathname", pathname);
+  const [user, setUser] = useState<User | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState<true | false>(false);
   const [isAnimating, setIsAnimating] = useState<true | false>(false);
@@ -56,6 +66,27 @@ export default function AccountLayout({
   const showModal = () => {
     setIsAnimating(true); // Bắt đầu animation mở
     setIsModalOpen(true);
+  };
+  const getRelevantPathSegment = (path: string) => {
+    const segments = path.split("/");
+    const lastSegment = segments[segments.length - 1];
+
+    // Kiểm tra nếu đoạn cuối là số, lấy đoạn kế trước
+    if (!isNaN(Number(lastSegment))) {
+      return segments[segments.length - 2];
+    }
+    return lastSegment;
+  };
+
+  // Hàm tìm giá trị name tương ứng
+  const findNameByPath = (path: string) => {
+    const relevantSegment = getRelevantPathSegment(path);
+    const match = rightMenuLabel.find((item) => item.url === relevantSegment);
+    return match?.name || "";
+  };
+
+  const getNameMenu = (text: string) => {
+    // pathnames.indexOf()
   };
   const closeModal = () => {
     setIsAnimating(false); // Kích hoạt animation đóng
@@ -71,6 +102,15 @@ export default function AccountLayout({
     closeModal();
     router.push("/");
   };
+  const getDetailUser = async () => {
+    const data = await getUser();
+    if (data) {
+      setUser(data);
+    }
+  };
+  useEffect(() => {
+    getDetailUser();
+  }, []);
   return (
     <main>
       <div className="flex">
@@ -144,18 +184,24 @@ export default function AccountLayout({
               {pathname === "dashboard" ? (
                 <b>Trang chủ</b>
               ) : (
-                listMenuLeft.map((array, index) => (
-                  <div key={index}>
-                    {array.url === pathname && <b>{array.name}</b>}
-                  </div>
-                ))
+                (() => {
+                  const match = listMenuLeft.find(
+                    (menu) => menu.url === pathname
+                  );
+                  if (match) {
+                    return <b>{match.name}</b>; // Nếu tìm thấy trong listMenuLeft
+                  } else {
+                    const additionalName = findNameByPath(pathnames); // Gọi hàm findNameByPath
+                    return <b>{additionalName}</b>; // Kết quả từ hàm findNameByPath
+                  }
+                })()
               )}
             </div>
             <div className="p-5">
               <div className="flex justify-center">
                 <UserOutlined />
               </div>
-              <div>Người dùng</div>
+              {user?.firstName ? user?.firstName : ""}
             </div>
           </div>
           <div className="bg-[#ccc] min-h-[720px] w-full">{children}</div>
