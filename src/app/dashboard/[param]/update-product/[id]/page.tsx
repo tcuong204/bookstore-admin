@@ -52,31 +52,28 @@ export default function UpdateProduct() {
   const [form] = Form.useForm();
   const pathname = usePathname();
   const getProduct = async () => {
-    const res = await axiosInstance.get(
-      "/get-product-details?id=" + pathname.split("/").pop()
-    );
-    const userData = res.data.product;
-    setProduct(userData);
-
-    // Cập nhật giá trị cho form
-    form.setFieldsValue({
-      id: product?.id,
-      name: product?.name,
-      author: product?.author,
-      supplier: product?.supplier,
-      publisher: product?.publisher,
-      bookLayout: product?.bookLayout,
-      price: product?.price,
-      originalPrice: product?.originalPrice,
-      productCode: product?.productCode,
-      publishYear: product?.publishYear,
-      language: product?.language,
-      weight: product?.weight,
-      size: product?.size,
-      quantityOfPages: product?.quantityOfPages,
-      quantityAvailable: product?.quantityOfPages,
-      description: product?.description,
-    });
+    const res = await axiosInstance
+      .get("/get-product-details?id=" + pathname.split("/").pop())
+      .then((res) => {
+        form.setFieldsValue({
+          id: res.data.product?.id,
+          name: res.data.product?.name,
+          author: res.data.product?.author,
+          supplier: res.data.product?.supplier,
+          publisher: res.data.product?.publisher,
+          bookLayout: res.data.product?.bookLayout,
+          price: res.data.product?.price,
+          originalPrice: res.data.product?.originalPrice,
+          productCode: res.data.product?.productCode,
+          publishYear: res.data.product?.publishYear,
+          language: res.data.product?.language,
+          weight: res.data.product?.weight,
+          size: res.data.product?.size,
+          quantityOfPages: res.data.product?.quantityOfPages,
+          quantityAvailable: res.data.product?.quantityOfPages,
+          description: res.data.product?.description,
+        });
+      });
   };
 
   const onFinish: FormProps<DetailProduct>["onFinish"] = async (values) => {
@@ -101,7 +98,7 @@ export default function UpdateProduct() {
   };
   useEffect(() => {
     getProduct();
-  });
+  }, []);
   return (
     <div className="p-4">
       <div className="p-4 bg-[#fff]">
@@ -197,7 +194,7 @@ export default function UpdateProduct() {
               />
             </Form.Item>
           </Form>
-          <div>
+          {/* <div>
             <Dragger {...props}>
               <p className="ant-upload-drag-icon">
                 <InboxOutlined />
@@ -210,7 +207,7 @@ export default function UpdateProduct() {
                 uploading company data or other banned files.
               </p>
             </Dragger>
-          </div>
+          </div> */}
         </div>
       </div>
       {contextHolder}

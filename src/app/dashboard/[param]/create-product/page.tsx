@@ -99,7 +99,7 @@ export default function CreateProduct() {
                 name="author"
                 rules={[{ required: true, message: "Vui lòng nhập tác giả!" }]}
               >
-                <Input.Password autoComplete="new-password" />
+                <Input />
               </Form.Item>
               <Form.Item<DetailProduct> label="Nhà cung cấp" name="supplier">
                 <Input />
@@ -107,12 +107,17 @@ export default function CreateProduct() {
               <Form.Item<DetailProduct> label="NXB" name="publisher">
                 <Input />
               </Form.Item>
-              <Form.Item<DetailProduct> label="Giá ban đầu" name="price">
+              <Form.Item<DetailProduct>
+                label="Giá ban đầu"
+                name="price"
+                rules={[{ required: true, message: "Vui lòng nhập giá!" }]}
+              >
                 <Input />
               </Form.Item>
               <Form.Item<DetailProduct>
                 label="Giá khuyến mại"
                 name="originalPrice"
+                rules={[{ required: true, message: "Vui lòng nhập giá!" }]}
               >
                 <Input />
               </Form.Item>

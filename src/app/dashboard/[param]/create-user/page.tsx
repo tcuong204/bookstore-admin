@@ -32,8 +32,10 @@ export default function CreateUser() {
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     try {
-      const res = await axiosInstance.post("/create-new-user", values);
-      console.log(res);
+      const res = await axiosInstance
+        .post("/create-new-user", values)
+        .catch((err) => messageApi.error("Email đã tồn tại"));
+      console.log(res.status);
 
       if (res.status === 201) {
         messageApi.success("Thêm người dùng thành công");

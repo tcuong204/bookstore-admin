@@ -184,7 +184,7 @@ export default function UpdateProduct() {
               />
             </Form.Item>
           </Form>
-          <div>
+          {/* <div>
             <Dragger {...props}>
               <p className="ant-upload-drag-icon">
                 <InboxOutlined />
@@ -197,7 +197,7 @@ export default function UpdateProduct() {
                 uploading company data or other banned files.
               </p>
             </Dragger>
-          </div>
+          </div> */}
         </div>
       </div>
       {contextHolder}
