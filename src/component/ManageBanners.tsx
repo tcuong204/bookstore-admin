@@ -96,12 +96,10 @@ export default function ManageBanners() {
                 <Space size="middle">
                   <a
                     onClick={() => {
-                      // showModal();
-                      // setId(record.id);
+                      showModal();
                     }}
                   >
                     <DeleteOutlined />
-                    Xóa
                   </a>
                   {isModalOpen && (
                     <div
@@ -120,11 +118,11 @@ export default function ManageBanners() {
                         <div className="flex  justify-center items-center h-full">
                           <div className="bg-[#fff] w-[400px]">
                             <div className="p-4 flex justify-center">
-                              <b className="text-[20px]">Xóa tài khoản</b>
+                              <b className="text-[20px]">Xóa banner</b>
                             </div>
                             <Divider style={{ margin: 0 }} />
                             <div className="h-[60px] flex justify-center items-center">
-                              <p>Bạn có chắc chắn xóa banner này ?</p>
+                              <p>Bạn có chắc chắn xóa banner này</p>
                             </div>
                             <div
                               className="p-4"
@@ -184,6 +182,7 @@ export default function ManageBanners() {
           </div>
         </ConfigProvider>
       </div>
+      {contextHolder}
     </div>
   );
 }

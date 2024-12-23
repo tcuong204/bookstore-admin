@@ -51,6 +51,7 @@ export default function UpdateProduct() {
   const [product, setProduct] = useState<DetailProduct>();
   const [form] = Form.useForm();
   const pathname = usePathname();
+
   const getProduct = async () => {
     const res = await axiosInstance
       .get("/get-product-details?id=" + pathname.split("/").pop())
@@ -77,10 +78,10 @@ export default function UpdateProduct() {
   };
 
   const onFinish: FormProps<DetailProduct>["onFinish"] = async (values) => {
-    console.log(values);
+    const body = { ...values, productId: pathname.split("/").pop() };
 
     try {
-      const res = await axiosInstance.patch("/update-product", values);
+      const res = await axiosInstance.patch("/update-product", body);
       console.log(res);
 
       if (res.status === 200) {
