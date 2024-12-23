@@ -5,6 +5,7 @@ import {
   BookOutlined,
   CheckSquareOutlined,
   CreditCardOutlined,
+  ExportOutlined,
   LoginOutlined,
   ProductOutlined,
   UserOutlined,
@@ -34,6 +35,11 @@ const listMenuLeft = [
     name: "Đơn hàng",
     url: "manage-orders",
   },
+  {
+    img: <ExportOutlined />,
+    name: "Nhập hàng",
+    url: "import-product",
+  },
 ];
 export default function AccountLayout({
   children,
@@ -42,6 +48,9 @@ export default function AccountLayout({
 }) {
   const pathnames = usePathname();
   const pathname = pathnames.split("/").pop();
+  const param = useParams();
+  console.log(param);
+
   const [isModalOpen, setIsModalOpen] = useState<true | false>(false);
   const [isAnimating, setIsAnimating] = useState<true | false>(false);
   const router = useRouter();

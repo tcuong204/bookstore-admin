@@ -18,7 +18,7 @@ import TextArea from "antd/es/input/TextArea";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
-
+const { Option } = Select;
 const onFinishFailed: FormProps<DetailProduct>["onFinishFailed"] = (
   errorInfo
 ) => {
@@ -49,19 +49,21 @@ export default function CreateProduct() {
   const router = useRouter();
   const [messageApi, contextHolder] = message.useMessage();
   const [form] = Form.useForm();
+  const [select, setSelect] = useState("1");
   const onFinish: FormProps<DetailProduct>["onFinish"] = async (values) => {
+    const body = { ...values, image: "", genreId: select };
     try {
-      const res = await axiosInstance.post("/create-new-user", values);
+      const res = await axiosInstance.post("/add-product", body);
       console.log(res);
 
       if (res.status === 201) {
-        messageApi.success("Thêm người dùng thành công");
+        messageApi.success("Thêm sản phẩm thành công");
         form.resetFields();
         setTimeout(() => {
           router.back();
         }, 1000);
       } else {
-        messageApi.error("Thêm người dùng không thành công");
+        messageApi.error("Thêm sản phẩm không thành công");
       }
     } catch {
     } finally {
@@ -140,6 +142,15 @@ export default function CreateProduct() {
                 <Input />
               </Form.Item>
             </div>
+            <Select defaultValue={"1"} onChange={(e) => setSelect(e)}>
+              <Option value="1">Tieu thuyet</Option>
+              <Option value="2">Nhan vat - Bai hoc Kinh doanh</Option>
+              <Option value="6">Truyện thiếu nhi</Option>
+              <Option value="7">Lịch sử</Option>
+              <Option value="8">Địa lý</Option>
+              <Option value="3"> Fantance</Option>
+              <Option value="4"> Business</Option>
+            </Select>
             <Form.Item<DetailProduct> label="Mô tả" name="description">
               <TextArea rows={4} />
             </Form.Item>
@@ -162,7 +173,7 @@ export default function CreateProduct() {
               />
             </Form.Item>
           </Form>
-          <div>
+          {/* <div>
             <Dragger {...props}>
               <p className="ant-upload-drag-icon">
                 <InboxOutlined />
@@ -175,7 +186,7 @@ export default function CreateProduct() {
                 uploading company data or other banned files.
               </p>
             </Dragger>
-          </div>
+          </div> */}
         </div>
       </div>
       {contextHolder}

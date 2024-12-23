@@ -71,8 +71,22 @@ export default function ManageProducts() {
                 title="Giá ban đầu"
                 dataIndex="originalPrice"
                 key="originalPrice"
+                render={(_: any, record: Product) => (
+                  <Space size="middle">
+                    <p>{record.originalPrice.toLocaleString("en-US")}</p>
+                  </Space>
+                )}
               />
-              <Column title="Giá khuyến mại" dataIndex="price" key="price" />
+              <Column
+                title="Giá khuyến mại"
+                dataIndex="price"
+                key="price"
+                render={(_: any, record: Product) => (
+                  <Space size="middle">
+                    <p>{record.price.toLocaleString("en-US")}</p>
+                  </Space>
+                )}
+              />
               <Column
                 title="Số lượng còn"
                 dataIndex="quantityAvailable"

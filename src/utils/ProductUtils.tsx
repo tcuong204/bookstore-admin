@@ -33,6 +33,13 @@ export interface ProductResponse {
   products: Product[];
   pagination: Pagination;
 }
+export interface BestSellerProps {
+  id: number;
+  name: string;
+  image: string;
+  price: number;
+  soldCount: number;
+}
 export interface DetailProduct {
   id: number;
   name: string;
@@ -119,4 +126,16 @@ export const searchProductbyName = async (
     .then((res) => (data = res.data))
     .catch();
   return data;
+};
+export const formatDateTime = (dateTime: string): string => {
+  const date = new Date(dateTime);
+
+  const day = date.getDate().toString().padStart(2, "0");
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const year = date.getFullYear();
+
+  const hours = date.getHours().toString().padStart(2, "0");
+  const minutes = date.getMinutes().toString().padStart(2, "0");
+
+  return `${day}/${month}/${year} - ${hours}:${minutes}`;
 };

@@ -19,7 +19,12 @@ const PieChart = () => {
     datasets: [
       {
         label: "My First Dataset",
-        data: [0, 10, 0, 1],
+        data: [
+          orders?.processing,
+          orders?.shipping,
+          orders?.completed,
+          orders?.returned,
+        ],
         backgroundColor: [
           "rgb(255, 205, 86)",
           "rgb(54, 162, 235)",

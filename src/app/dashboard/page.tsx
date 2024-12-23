@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Divider, Flex, Modal, Radio } from "antd";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 interface PopupContextProps {
   openPopup: boolean;
   handleOk: () => void;
@@ -17,6 +18,9 @@ const LineChart = dynamic(() => import("@/component/LineChart"), {
   ssr: false,
 });
 const PieChart = dynamic(() => import("@/component/PieChart"), {
+  ssr: false,
+});
+const BestSeller = dynamic(() => import("@/component/BestSeller"), {
   ssr: false,
 });
 export default function Dashboard() {
@@ -57,6 +61,14 @@ export default function Dashboard() {
             </div>
 
             <PieChart />
+          </div>
+        </div>
+        <div className="bg-[#fff] p-4 w-[60%] ml-4 rounded-lg mt-4">
+          <div>
+            <p>Sản phẩm bán chạy</p>
+            <Link href={"dashboard/manage-products"}>
+              <BestSeller />
+            </Link>
           </div>
         </div>
       </div>

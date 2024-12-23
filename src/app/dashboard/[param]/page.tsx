@@ -1,4 +1,5 @@
 "use client";
+import ImportProduct from "@/component/ImportProduct";
 import ManageAccounts from "@/component/ManageAccount";
 import ManageBanners from "@/component/ManageBanners";
 import ManageOrders from "@/component/ManageOrders";
@@ -18,6 +19,8 @@ const AccountParamPage = () => {
         return <ManageOrders />;
       case "manage-products":
         return <ManageProducts />;
+      case "import-product":
+        return <ImportProduct />;
       default:
         return <div>Nội dung không tồn tại.</div>;
     }

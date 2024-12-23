@@ -3,6 +3,9 @@ import { ConfigProvider, Divider, message, Space, Table } from "antd";
 import Column from "antd/es/table/Column";
 import { useEffect, useState } from "react";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { formatDateTime } from "@/utils/ProductUtils";
+import { CustomButton } from "@/utils/CustomButton";
+import { useRouter } from "next/navigation";
 interface banner {
   id: number;
   imageUrl: string;
@@ -15,6 +18,7 @@ export default function ManageBanners() {
   const [isModalOpen, setIsModalOpen] = useState<true | false>(false);
   const [messageApi, contextHolder] = message.useMessage();
   const [page, setPage] = useState<number>(1);
+  const router = useRouter();
   const [isAnimating, setIsAnimating] = useState<true | false>(false);
   const getBanner = async () => {
     const res = await axiosInstance
@@ -33,9 +37,30 @@ export default function ManageBanners() {
   useEffect(() => {
     getBanner();
   }, []);
+  const handleDelete = async (id: number | null) => {
+    try {
+      const res = await axiosInstance.delete("delete-banner?bannerId=" + id);
+      if (res.status === 200) {
+        messageApi.success("Xóa banner thành công");
+        getBanner();
+      } else {
+        messageApi.error("Xóa banner không thành công");
+      }
+    } catch {}
+  };
   return (
     <div className="p-4">
       <div className="bg-[#fff]">
+        <div className="flex justify-end p-4">
+          <CustomButton
+            className="w-[20%]"
+            onClick={() => router.push("manage-banners/create-banner")}
+            buttonText="Thêm banner"
+            buttonType="primary"
+            disabled={false}
+            htmlType="button"
+          />
+        </div>
         <ConfigProvider
           theme={{
             token: { colorPrimary: "#C62027", colorLinkHover: "#C62027" },
@@ -44,8 +69,26 @@ export default function ManageBanners() {
         >
           <Table<banner> dataSource={listbanner} rowKey="id" pagination={false}>
             <Column title="Id" dataIndex="id" key="id" />
-            <Column title="Ảnh" dataIndex="imageUrl" key="imageUrl" />
-            <Column title="Ngày tạo" dataIndex="createdAt" key="createdAt" />
+            <Column
+              title="Ảnh"
+              dataIndex="imageUrl"
+              key="imageUrl"
+              render={(_: any, record: banner) => (
+                <Space size="middle">
+                  <img src={record.imageUrl} width={60}></img>
+                </Space>
+              )}
+            />
+            <Column
+              title="Ngày tạo"
+              dataIndex="createdAt"
+              key="createdAt"
+              render={(_: any, record: banner) => (
+                <Space size="middle">
+                  <p>{formatDateTime(record.createdAt)}</p>
+                </Space>
+              )}
+            />
             <Column
               title=""
               key="action"
@@ -81,10 +124,7 @@ export default function ManageBanners() {
                             </div>
                             <Divider style={{ margin: 0 }} />
                             <div className="h-[60px] flex justify-center items-center">
-                              <p>
-                                {/* Bạn có chắc chắn xóa "{record.firstName}{" "}
-                                  {record.lastName}" */}
-                              </p>
+                              <p>Bạn có chắc chắn xóa banner này ?</p>
                             </div>
                             <div
                               className="p-4"
@@ -103,7 +143,7 @@ export default function ManageBanners() {
                               </button>
                               <button
                                 className="button-confirm"
-                                // onClick={() => handleDelete(record.id)}
+                                onClick={() => handleDelete(record.id)}
                               >
                                 Xác nhận
                               </button>
@@ -122,9 +162,9 @@ export default function ManageBanners() {
               render={(_: any, record: banner) => (
                 <Space size="middle">
                   <a
-                  // onClick={() =>
-                  //   router.push(`manage-account/update-user/${record.id}`)
-                  // }
+                    onClick={() =>
+                      router.push(`manage-banner/update-banner/${record.id}`)
+                    }
                   >
                     <EditOutlined />
                     Sửa
